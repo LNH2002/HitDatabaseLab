@@ -1,0 +1,29 @@
+CREATE TABLE `course` (
+  `Cid` char(10) NOT NULL,
+  `Cname` char(30) DEFAULT NULL,
+  `Credit` float DEFAULT NULL,
+  `Chours` int DEFAULT NULL,
+  `Tid` char(3) DEFAULT NULL,
+  PRIMARY KEY (`Cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `sc` (
+  `Sid` char(8) NOT NULL,
+  `Cid` char(10) NOT NULL,
+  `Score` float DEFAULT NULL,
+  PRIMARY KEY (`Sid`,`Cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `student` (
+  `Sid` char(8) NOT NULL,
+  `Sname` varchar(100) DEFAULT NULL,
+  `Sage` int DEFAULT NULL,
+  `Ssex` varchar(10) DEFAULT NULL,
+  `Sclass` varchar(30) DEFAULT NULL,
+  `Sdept` varchar(30) DEFAULT NULL,
+  `Saddr` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`Sid`),
+  CONSTRAINT `age_check` CHECK ((`Sage` >= 0)),
+  CONSTRAINT `sex_check` CHECK (((`Ssex` = _utf8mb4'男') or (`Ssex` = _utf8mb4'女')))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
