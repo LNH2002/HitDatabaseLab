@@ -1,0 +1,12 @@
+com\itheima\service\impl\SCServiceImpl.class
+com\itheima\service\SCService.class
+com\itheima\util\SqlSessionFactoryUtils.class
+com\itheima\pojo\Course.class
+com\itheima\service\CourseService.class
+com\itheima\pojo\SC.class
+com\itheima\web\servlet\ExecuteSqlServlet$1.class
+com\itheima\service\impl\CourseServiceImpl.class
+com\itheima\web\servlet\SelectStudentServlet.class
+com\itheima\web\servlet\SelectCourseServlet.class
+com\itheima\web\servlet\SelectScServlet.class
+com\itheima\web\servlet\ExecuteSqlServlet.class

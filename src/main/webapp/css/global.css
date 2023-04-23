@@ -1,0 +1,23 @@
+thead{
+    display: none;
+}
+.el-table {
+    border: 0;
+}
+.el-table::before {
+    background-color:white;
+}
+.el-table::after {
+    background-color:white;
+}
+.el-table .cell {
+    text-align: left;
+}
+
+.col-with-padding-right {
+    padding-right: 20px;
+}
+
+.col-with-padding-left {
+    padding-left: 20px;
+}

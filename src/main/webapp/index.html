@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+
+</head>
+<body>
+
+<div style="float: left;width: 600px">
+    <div id='selectDB' style="height: 10%;width: 100%;float: left;overflow: auto;">
+        <el-row style="padding-top: 10px;padding-left: 10px">
+            <el-col span=4 style="margin-top: 9px;">
+                数据库名：
+            </el-col>
+            <el-col span=9 style="padding-right: 10px;text-align: center;">
+                <el-input
+                        placeholder="请输入学号"
+                        v-model="sct">
+                </el-input>
+            </el-col>
+            <el-col span=3 style="padding-left: 10px;text-align: center;">
+                <el-button type="primary" size="medium" @click="changeSct">确认<i
+                        class="el-icon-setting el-icon--right"></i>
+                </el-button>
+            </el-col>
+        </el-row>
+    </div>
+    <div id="table1" style="height: 30%;width: 600px;float: left;">
+
+        <el-row style="padding-top: 10px;padding-left: 10px">
+            <el-col span=3 style="margin-top: 9px">
+                表1
+            </el-col>
+            <el-col span=10 style="padding-right: 10px">
+                <el-input
+                        placeholder="请输入学号"
+                        v-model="tableName">
+                </el-input>
+            </el-col>
+            <el-col span=3 style="padding-left: 10px">
+                <el-button type="primary" size="medium" @click="load">装载<i class="el-icon-setting el-icon--right"></i>
+                </el-button>
+            </el-col>
+        </el-row>
+        <br>
+        <div style="height: 150px;overflow: auto;width: 550px;float: left;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+            <el-table style="width: 100%" border :data="tableData">
+                <template v-for="(item,index) in tableHead">
+                    <el-table-column :prop="item.column_name" :label="item.column_comment" :key="index"
+                                     v-if="item.column_name != 'id'"></el-table-column>
+                </template>
+            </el-table>
+        </div>
+        <div style="height: 150px;width: 40px;float: right;padding-left:10px">
+            <br>数<br>据<br>展<br>示
+        </div>
+    </div>
+    <div id="table2" style="height: 30%;width: 600px;float: left;">
+
+        <el-row style="padding-top: 10px;padding-left: 10px">
+            <el-col span=3 style="margin-top: 9px">
+                表1
+            </el-col>
+            <el-col span=10 style="padding-right: 10px">
+                <el-input
+                        placeholder="请输入学号"
+                        v-model="tableName">
+                </el-input>
+            </el-col>
+            <el-col span=3 style="padding-left: 10px">
+                <el-button type="primary" size="medium" @click="load">装载<i class="el-icon-setting el-icon--right"></i>
+                </el-button>
+            </el-col>
+        </el-row>
+        <br>
+        <div style="height: 150px;overflow: auto;width: 550px;float: left;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+            <el-table style="width: 100%" border :data="tableData">
+                <template v-for="(item,index) in tableHead">
+                    <el-table-column :prop="item.column_name" :label="item.column_comment" :key="index"
+                                     v-if="item.column_name != 'id'"></el-table-column>
+                </template>
+            </el-table>
+        </div>
+        <div style="height: 150px;width: 40px;float: right;padding-left:10px">
+            <br>数<br>据<br>展<br>示
+        </div>
+    </div>
+    <div id="table3" style="height: 30%;width: 600px;float: left;">
+
+        <el-row style="padding-top: 10px;padding-left: 10px">
+            <el-col span=3 style="margin-top: 9px">
+                表1
+            </el-col>
+            <el-col span=10 style="padding-right: 10px">
+                <el-input
+                        placeholder="请输入学号"
+                        v-model="tableName">
+                </el-input>
+            </el-col>
+            <el-col span=3 style="padding-left: 10px">
+                <el-button type="primary" size="medium" @click="load">装载<i class="el-icon-setting el-icon--right"></i>
+                </el-button>
+            </el-col>
+        </el-row>
+        <br>
+        <div style="height: 150px;overflow: auto;width: 550px;float: left;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+            <el-table style="width: 100%" border :data="tableData">
+                <template v-for="(item,index) in tableHead">
+                    <el-table-column :prop="item.column_name" :label="item.column_comment" :key="index"
+                                     v-if="item.column_name != 'id'"></el-table-column>
+                </template>
+            </el-table>
+        </div>
+        <div style="height: 150px;width: 40px;float: right;padding-left:10px">
+            <br>数<br>据<br>展<br>示
+        </div>
+    </div>
+</div>
+
+<div id="writeSql" style="width: 700px;float: right;">
+
+    <div id="showStudent">
+        <div style="height: 40%">
+            <el-row>
+                <el-col :span=3>
+                    <el-checkbox style="margin-top: 9px"
+                                 v-model="checkedNumber">学号
+                    </el-checkbox>
+                </el-col>
+                <el-col :span=9 style="padding-right: 20px">
+                    <el-input
+                            placeholder="请输入学号"
+                            v-model="inputNumber "
+                            :disabled=!checkedNumber>
+                    </el-input>
+                </el-col>
+
+                <el-col :span=3 style="padding-left: 20px;">
+                    <el-checkbox style="margin-top: 9px"
+                                 v-model="checkedName">姓名
+                    </el-checkbox>
+                </el-col>
+                <el-col :span=9 style="padding-right: 10px">
+                    <el-input
+                            placeholder="请输入姓名"
+                            v-model="inputName"
+                            :disabled=!checkedName>
+                    </el-input>
+                </el-col>
+            </el-row>
+            <br>
+
+
+            <el-row>
+                <el-col :span=3>
+                    <el-checkbox style="margin-top: 9px" v-model="checkedSex">性别</el-checkbox>
+                </el-col>
+                <el-col :span=9 style="padding-right: 20px;margin-top: 6px">
+                    <template>
+                        <el-radio v-model="inputSex" label="男">男</el-radio>
+                        <el-radio v-model="inputSex" label="女">女</el-radio>
+                    </template>
+
+                </el-col>
+                <el-col :span=3 class="col-with-padding-left">
+                    <el-checkbox style="margin-top: 9px; padding-left: 20px" v-model="checkedClass">班级</el-checkbox>
+                </el-col>
+                <el-col :span=9 style="padding-right: 10px">
+                    <el-input
+                            placeholder="请输入班级"
+                            v-model="inputClass"
+                            :disabled=!checkedClass>
+                    </el-input>
+                </el-col>
+            </el-row>
+
+
+            <br>
+
+            <el-row>
+                <el-col :span=3>
+                    <el-checkbox style="margin-top: 9px" v-model="checkedDept">系别</el-checkbox>
+                </el-col>
+                <el-col :span=9 style="padding-right: 20px;">
+                    <el-input
+                            placeholder="请输入系别"
+                            v-model="inputDept"
+                            :disabled=!checkedDept>
+                    </el-input>
+                </el-col>
+                <el-col :span=3 class="col-with-padding-left">
+                    <el-checkbox style="margin-top: 9px;padding-left: 20px" v-model="checkedAddr">地址</el-checkbox>
+                </el-col>
+                <el-col :span=9 style="padding-right: 10px">
+                    <el-input
+                            placeholder="请输入地址"
+                            v-model="inputAddr"
+                            :disabled=!checkedAddr>
+                    </el-input>
+                </el-col>
+            </el-row>
+
+            <br>
+
+            <el-row>
+                <el-col span=3>
+                    <el-checkbox v-model="checkedAge" style="margin-top: 9px">年龄</el-checkbox>
+                </el-col>
+                <el-col span=4 style="padding-right:  20px">
+                    <el-input
+                            placeholder="最小年龄"
+                            v-model="inputMinAge"
+                            :disabled=!checkedAge>
+                    </el-input>
+                </el-col>
+                <el-col span=1 style="margin-top: 9px;margin-left: 18px">
+                    ~
+                </el-col>
+                <el-col span=4 style="padding-left: 20px">
+                    <el-input
+                            placeholder="最大年龄"
+                            v-model="inputMaxAge"
+                            :disabled=!checkedAge>
+                    </el-input>
+                </el-col>
+                <el-col span=3 style="padding-left: 70px">
+                    <el-button type="primary" @click="constructSql" round>构造SQL语句</el-button>
+                </el-col>
+
+            </el-row>
+
+            <br>
+            <br>
+            <!--按钮-->
+            <el-row>
+                <el-col span=17>
+                    <el-input
+                            placeholder="请输入地址"
+                            v-model="selectSql"
+                            :disabled=false>
+                    </el-input>
+                </el-col>
+                <el-col span=2 style="padding-left: 40px;">
+                    <el-button type="primary" icon="el-icon-zoom-in" @click="executeSql">执行SQL语句</el-button>
+                </el-col>
+            </el-row>
+            <el-row>
+
+            </el-row>
+            <br>
+        </div>
+        <div style="height: 60%;width: 700px;overflow: auto">
+            <el-table style="width: 100%" border :data="tableData">
+                <template v-for="(item,index) in tableHead">
+                    <el-table-column :prop="item.column_name" :label="item.column_comment" :key="index"
+                                     v-if="item.column_name != 'id'"></el-table-column>
+                </template>
+            </el-table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    pageList = ['showStudent', 'showSC', 'showCourse']
+    sct = 'school'
+    new Vue({
+        el: "#writeSql",
+        mounted() {
+            //当页面加载完成后，发送异步请求，获取数据
+            var _this = this;
+            this.sct = 'school';
+            axios({
+                method: "get",
+                url: "http://localhost:8080/brand-case/executeSqlServlet",
+                params: {
+                    "sql": _this.selectSql,
+                    'sct': _this.sct
+                },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                }
+            }).then(function (resp) {
+                _this.tableData = resp.data.data;
+                _this.tableHead = resp.data.tableHead;
+                _this.rowCnt = resp.data.rowCnt;
+                _this.pageCnt = Math.ceil(_this.rowCnt / 30)
+            })
+
+        },
+
+        methods: {
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex === 1) {
+                    return 'warning-row';
+                } else if (rowIndex === 3) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            inputValue(inputNumber) {
+                this.inputNumber = 852;
+            },
+
+            constructSql() {
+                this.selectSql = "select * from student";
+                if (this.checkedSex === true && this.inputSex !== "男" && this.inputSex !== "女") {
+                    alert("性别只能是男或女");
+                    return;
+                }
+                var checkBoxes = [
+                    this.checkedNumber,
+                    this.checkedName,
+                    // checkedAge,
+                    this.checkedSex,
+                    this.checkedClass,
+                    this.checkedDept,
+                    this.checkedAddr
+                ];
+
+                var inputBoxes = [
+                    this.inputNumber,
+                    this.inputName,
+                    // inputMinAge,
+                    // inputMaxAge,
+                    this.inputSex,
+                    this.inputClass,
+                    this.inputDept,
+                    this.inputAddr
+                ]
+
+
+                var word = [
+                    "Sid", "Sname", "Ssex", "Sclass", "Sdept", "Saddr"
+                ]
+                let len = checkBoxes.length;
+                let num = 0;
+                for (let i = 0; i < len; i++) {
+                    if (checkBoxes[i] === true) {
+                        num = num + 1;
+                    }
+                }
+                if (this.checkedAge) {
+                    num = num + 1;
+                }
+                if (num !== 0) {
+                    this.selectSql = this.selectSql + " where";
+
+                    let flag = false;
+                    for (let i = 0; i < len; i++) {
+                        if (checkBoxes[i] === true) {
+                            if (inputBoxes[i] === "") {
+                                this.$notify({
+                                    title: '执行说明',
+                                    dangerouslyUseHTMLString: true,
+                                    message: word[i] + "字段选中但未未输入，请输入"
+                                });
+                                return;
+                            }
+                            if (flag) {
+                                this.selectSql = this.selectSql + " and"
+                            }
+
+                            if (inputBoxes[i].includes("%") || inputBoxes[i].includes("_")) {
+                                this.selectSql = this.selectSql + " " + word[i] + " like \'" + inputBoxes[i] + "\'";
+                            }
+                            if (!(inputBoxes[i].includes("%") || inputBoxes[i].includes("_"))) {
+                                this.selectSql = this.selectSql + " " + word[i] + "=\'" + inputBoxes[i] + "\'";
+                            }
+
+                            flag = true;
+                        }
+                    }
+
+                    if (this.checkedAge) {
+                        if (this.inputMinAge === "" || this.inputMaxAge === "") {
+                            this.$notify({
+                                title: '执行说明',
+                                dangerouslyUseHTMLString: true,
+                                message: "age字段选中却未将最大年龄最小和年龄均输入，请输入"
+                            });
+                        }
+                        if (flag) {
+                            this.selectSql = this.selectSql + " and"
+                        }
+                        this.selectSql = this.selectSql + " " + "Sage>=" + this.inputMinAge + " and Sage <=" + this.inputMaxAge;
+
+                    }
+                }
+
+            },
+            executeSql() {
+                var _this = this;
+                this.selectSql = this.selectSql.trim();
+                let arr = this.selectSql.split(/\s+/).filter(Boolean);
+                if (arr[0] === 'use') {
+                    if (arr.length !== 2) {
+                        this.$notify({
+                            title: '执行说明',
+                            dangerouslyUseHTMLString: true,
+                            message: '数据库选择错误，请检查use语句'
+                        });
+                        return;
+                    }
+                    if (this.selectSql[this.selectSql.length - 1] === ';')
+                        this.sct = arr[1].substr(0, arr[1].length - 1);
+                    else
+                        this.sct = arr[1];
+                    sct = this.sct;
+                    this.$notify({
+                        title: '执行说明',
+                        dangerouslyUseHTMLString: true,
+                        message: '数据库设置为：' + this.sct
+                    });
+                    return;
+                }
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/brand-case/executeSqlServlet",
+                    params: {
+                        sql: encodeURIComponent(this.selectSql),
+                        'sct': sct
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    }
+                }).then(function (resp) {
+                    _this.tableData = resp.data.data;
+                    _this.tableHead = resp.data.tableHead;
+                    _this.msg = resp.data.msg;
+                    _this.$notify({
+                        title: '执行说明',
+                        dangerouslyUseHTMLString: true,
+                        message: _this.msg
+                    });
+                })
+            }
+        },
+
+        data() {
+            return {
+                sct: "school",
+                currentPage: 1,
+                checkedNumber: false,
+                checkedName: false,
+                checkedAge: false,
+                checkedSex: false,
+                checkedClass: false,
+                checkedDept: false,
+                checkedAddr: false,
+                inputNumber: "",
+                inputName: "",
+                inputMinAge: "",
+                inputMaxAge: "",
+                inputSex: "",
+                inputClass: "",
+                inputDept: "",
+                inputAddr: "",
+                selectSql: "select * from student",
+                pageCnt: 1,
+                rowCnt: 0,
+                msg: "",
+                tableData: [],
+                tableDataShow: []
+            }
+        }
+    })
+    new Vue({
+        el: "#selectDB",
+        methods: {
+            changeSct() {
+                sct = this.sct;
+                var _this = this
+                this.$notify({
+                    title: '执行说明',
+                    dangerouslyUseHTMLString: true,
+                    message: '数据库设置为：' + this.sct
+                });
+            },
+
+        },
+        data() {
+            return {
+                sct: "school",
+                tableName: "student",
+                selectSql: "",
+                tableHead: [],
+                tableData: [],
+                msg: ""
+            }
+        }
+    })
+    new Vue({
+        el: "#table1",
+        methods: {
+            load() {
+                this.tableName = this.tableName.toLowerCase()
+                this.tableName = this.tableName.replace(this.tableName[0], this.tableName[0].toUpperCase());
+                this.selectSql = "select * from " + this.tableName + " limit 20000";
+
+                var _this = this
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/brand-case/executeSqlServlet",
+                    params: {
+                        "sql": _this.selectSql,
+                        'sct': sct
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    }
+                }).then(function (resp) {
+                    _this.tableData = resp.data.data;
+                    _this.tableHead = resp.data.tableHead;
+                    _this.msg = resp.data.msg;
+                    _this.$notify({
+                        title: '执行说明',
+                        dangerouslyUseHTMLString: true,
+                        message: _this.msg
+                    });
+
+                })
+
+
+            },
+
+        },
+        data() {
+            return {
+                sct: "school",
+                tableName: "student",
+                selectSql: "",
+                tableHead: [],
+                tableData: [],
+                msg: ""
+            }
+        }
+    })
+    new Vue({
+        el: "#table2",
+        methods: {
+            load() {
+                this.tableName = this.tableName.toLowerCase()
+                this.tableName = this.tableName.replace(this.tableName[0], this.tableName[0].toUpperCase());
+                this.selectSql = "select * from " + this.tableName + " limit 20000";
+
+                var _this = this
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/brand-case/executeSqlServlet",
+                    params: {
+                        "sql": _this.selectSql,
+                        'sct': sct
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    }
+                }).then(function (resp) {
+                    _this.tableData = resp.data.data;
+                    _this.tableHead = resp.data.tableHead;
+                    _this.msg = resp.data.msg;
+                    _this.$notify({
+                        title: '执行说明',
+                        dangerouslyUseHTMLString: true,
+                        message: _this.msg
+                    });
+
+                })
+
+
+            },
+
+        },
+        data() {
+            return {
+                sct: "school",
+                tableName: "sc",
+                selectSql: "",
+                tableHead: [],
+                tableData: [],
+                msg: ""
+            }
+        }
+    })
+    new Vue({
+        el: "#table3",
+        methods: {
+            load() {
+                this.tableName = this.tableName.toLowerCase()
+                this.tableName = this.tableName.replace(this.tableName[0], this.tableName[0].toUpperCase());
+                this.selectSql = "select * from " + this.tableName + " limit 20000";
+
+                var _this = this
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/brand-case/executeSqlServlet",
+                    params: {
+                        "sql": _this.selectSql,
+                        sct: sct
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    }
+                }).then(function (resp) {
+                    _this.tableData = resp.data.data;
+                    _this.tableHead = resp.data.tableHead;
+                    _this.msg = resp.data.msg;
+                    _this.$notify({
+                        title: '执行说明',
+                        dangerouslyUseHTMLString: true,
+                        message: _this.msg
+                    });
+
+                })
+
+
+            },
+
+        },
+        data() {
+            return {
+                sct: "school",
+                tableName: "course",
+                selectSql: "",
+                tableHead: [],
+                tableData: [],
+                msg: ""
+            }
+        }
+    })
+
+</script>
+
+</body>
+</html>
